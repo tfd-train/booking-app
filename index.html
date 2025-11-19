@@ -13,11 +13,11 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
   </style>
   <script>
-    // ⚠️ 1. 這是您提供的後端網址 (如果有點擊「建立新版本」部署，請確認網址是否變更)
+    // 1. 後端 GAS 網址 (維持您上次提供的版本)
     const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwIpfn0Od-T6shTdT79YCPjZ9-49ZOGRl58a-gVwJnI1qXN1m_1xN28F0BQRJQa0mgC_Q/exec";
     
-    // ⚠️ 2. 您的 Google 日曆嵌入網址
-    const CALENDAR_EMBED_URL = "<iframe src="https://calendar.google.com/calendar/embed?src=02c213a0408b579568583642708285d69e8a9c62cb232cb3c1e7aa2d135d33d4%40group.calendar.google.com&ctz=Asia%2FTaipei" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>"; 
+    // 2. ✅ 已更新：這是您剛剛提供的日曆嵌入網址
+    const CALENDAR_EMBED_URL = "https://calendar.google.com/calendar/embed?src=02c213a0408b579568583642708285d69e8a9c62cb232cb3c1e7aa2d135d33d4%40group.calendar.google.com&ctz=Asia%2FTaipei"; 
   </script>
 </head>
 <body class="bg-slate-100 text-slate-800 h-screen overflow-hidden flex selection:bg-indigo-500 selection:text-white">
@@ -142,6 +142,7 @@
 
         <!-- 右側：公告與日曆 -->
         <div class="space-y-6">
+          <!-- 公告欄 -->
           <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
              <h3 class="font-bold text-slate-700 mb-3 text-sm uppercase tracking-wider flex items-center gap-2">
                <i class="ri-calendar-2-line text-indigo-500"></i> 未來 7 天已預約概況
@@ -151,6 +152,7 @@
              </div>
           </div>
 
+          <!-- 整合您的日曆 -->
           <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-1 overflow-hidden">
             <iframe id="calendarFrame" src="" style="border:0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
             <div class="p-2 text-center text-xs text-slate-400 bg-slate-50">
@@ -193,6 +195,7 @@
     let dbData = []; 
 
     // 初始化
+    // 這裡會使用您提供的 URL 來載入日曆
     $('#calendarFrame').src = CALENDAR_EMBED_URL;
     $('#currentDateDisplay').textContent = new Date().toISOString().slice(0,10);
     $('#date').value = new Date().toISOString().slice(0,10);
@@ -337,7 +340,7 @@
       list.forEach(x => {
         const isApproved = x.status.includes('已核准');
         const isConflict = x.status.includes('撞期');
-        const isRejected = x.status.includes('拒絕');
+        const isRejected = x.status.includes('已拒絕');
         
         let badgeClass = 'bg-amber-100 text-amber-700'; // 待審核 (預設)
         if(isApproved) badgeClass = 'bg-emerald-100 text-emerald-700';
